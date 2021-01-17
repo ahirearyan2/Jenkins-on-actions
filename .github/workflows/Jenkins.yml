@@ -1,0 +1,37 @@
+name: jenkins
+on: 
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+
+    - name: setup requirements
+      run: sudo apt install openjdk-8-jdk
+
+    - name: setup Jenkins
+      run: |
+        wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+        sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+        sudo apt-get update
+        sudo apt-get install jenkins
+
+    - name: Sleep for 1 minute
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '1m'
+
+    - name: print initial logs
+      run: |
+        sudo cat /var/log/jenkins/jenkins.log
+
+    - name: install localtunnel
+      run: |
+        sudo npm install -g localtunnel
+
+    - name: Creating Tunnel
+      run: |
+           lt --port 8080
