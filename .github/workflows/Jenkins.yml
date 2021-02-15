@@ -10,7 +10,7 @@ jobs:
     steps:
 
     - name: setup requirements
-      run: sudo apt install openjdk-8-jdk
+      run: sudo apt install python
 
     - name: setup Jenkins
       run: |
